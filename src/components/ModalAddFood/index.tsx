@@ -2,9 +2,11 @@ import React, { useRef, useCallback } from 'react';
 
 import { FiCheckSquare } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
+
 import { Form } from './styles';
 import Modal from '../Modal';
 import Input from '../Input';
+import api from '../../services/api';
 
 interface IFoodPlate {
   id: number;
@@ -38,6 +40,21 @@ const ModalAddFood: React.FC<IModalProps> = ({
   const handleSubmit = useCallback(
     async (data: ICreateFoodData) => {
       // TODO ADD A NEW FOOD AND CLOSE THE MODAL
+      setIsOpen();
+      try {
+        formRef.current?.setErrors({});
+        const { name, price, description, image } = data;
+        handleAddFood({
+          name,
+          price,
+          description,
+          image,
+        });
+
+        setIsOpen();
+      } catch (error) {
+        console.log(error);
+      }
     },
     [handleAddFood, setIsOpen],
   );
